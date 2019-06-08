@@ -92,6 +92,11 @@ def create_app():
         trees = json.loads(re.sub(r'([,{[])(\w+):', r'\1"\2":', ans))['foiarray']
 
         # convert bb to WGS84
+        def _conv(t):
+            lat, lon = to_wgs84(t['x'], t['y'])
+            t.update({'x': lat, 'y': lon})
+            return t
+        trees = [_conv(t) for t in trees]
 
         # convert to geojson
         trees = [to_geojson(t) for t in trees]
