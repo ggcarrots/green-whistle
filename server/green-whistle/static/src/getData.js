@@ -22,8 +22,18 @@ async function askForGeoJSON() {
         .fail(function () {
             console.log("ERROR OCCURED")
         });
+    addMarkersToMap(treeJsonData)
+}
+
+function addMarkersToMap(treeJsonData) {
+    let trees = [];
+    map.eachLayer(function (layer) {
+       if (layer._leaflet_id !== 26){
+           map.removeLayer(layer);
+       }
+    });
     treeJsonData.forEach(treeJson => {
-        L.geoJson(treeJson, {
+        const point = L.geoJson(treeJson, {
             style: function (feature) {
                 return feature.properties && feature.properties.style;
             },
@@ -38,8 +48,11 @@ async function askForGeoJSON() {
                     fillOpacity: 0.8
                 });
             }
-        }).addTo(map);
+        });
+        trees.push(point);
     });
+    const treesLayer = L.layerGroup(trees);
+    treesLayer.addTo(map);
 }
 
 function onEachFeature(feature, layer) {
