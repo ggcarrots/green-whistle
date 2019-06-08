@@ -42,6 +42,19 @@ def create_app():
         coords = float(request.args.get('lng')), float(request.args.get('lat'))
         return jsonify(to_p2000(*coords))
 
+    def to_geojson(tree):
+        tree_feature = {
+            "type": "Feature",
+            "properties": {
+                "name": tree['name'],
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [tree['x'], tree['y']]
+            }
+        }
+        return tree_feature
+
     # example: http://127.0.0.1:5000/trees.json?bb=52.205324323965435,20.97427896707837,52.21105683036724,20.98185675745256
     @app.route('/trees.json')
     def get_trees():
@@ -76,9 +89,12 @@ def create_app():
         ans = r.text
 
         # decode the response
-        trees = json.loads(re.sub(r'([,{[])(\w+):', r'\1"\2":', ans))
+        trees = json.loads(re.sub(r'([,{[])(\w+):', r'\1"\2":', ans))['foiarray']
 
         # convert bb to WGS84
+
+        # convert to geojson
+        trees = [to_geojson(t) for t in trees]
 
         return jsonify(trees)
 
