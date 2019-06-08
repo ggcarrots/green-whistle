@@ -42,6 +42,7 @@ def create_app():
         coords = float(request.args.get('lng')), float(request.args.get('lat'))
         return jsonify(to_p2000(*coords))
 
+    # example: http://127.0.0.1:5000/trees.json?bb=52.205324323965435,20.97427896707837,52.21105683036724,20.98185675745256
     @app.route('/trees.json')
     def get_trees():
         # consume the bounding box
@@ -49,18 +50,19 @@ def create_app():
         assert len(bb) == 4, 'expected bounding box as 4 numbers'
 
         # convert bb to P2000
-        bb = to_p2000(*bb[:2]) + to_p2000(*bb[2:])
+        bb = to_p2000(*bb[:2][::-1]) + to_p2000(*bb[2:][::-1])
+        bb = ':'.join(['%.8f' % x for x in bb])
 
         # fetch data from city API
         p = {
             'request': 'getfoi',
             'version': '1.0',
-            'bbox': ':'.join(['%.8f' % x for x in bb]),
+            'bbox': bb,
             'width': 491,
             'height': 604,
             # 'theme': 'dane_wawa.BOS_ZIELEN_WNIOSEK',
-            'theme': 'dane_wawa.BOS_ZIELEN_ZGODA',
-            # 'theme': 'dane_wawa.BOS_ZIELEN_NASADZENIE_POZ',
+            # 'theme': 'dane_wawa.BOS_ZIELEN_ZGODA',
+            'theme': 'dane_wawa.BOS_ZIELEN_NASADZENIE_POZ',
             # 'theme': 'dane_wawa.BOS_ZIELEN_NASADZENIE_ZAST',
             'clickable': 'yes',
             'area': 'yes',
