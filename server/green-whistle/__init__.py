@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, make_response
 import pyproj
 import requests as rq
 import re
@@ -101,6 +101,10 @@ def create_app():
         # convert to geojson
         trees = [to_geojson(t) for t in trees]
 
-        return jsonify(trees)
+        # CORS
+        resp = make_response(jsonify(trees))
+        h = resp.headers
+        h['Access-Control-Allow-Origin'] = '*'
+        return resp
 
     return app
