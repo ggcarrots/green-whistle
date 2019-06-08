@@ -26,3 +26,13 @@ function updateSidebar(feature) {
         $( "#cut_out_reason" ).html(feature.properties.cut_out_reason);
     }
 }
+
+$( '#directives_button').click(function () {
+    $( ".directives" ).css({'display': 'inline'});
+    $( ".main-body" ).css({'display': 'none'})
+});
+
+$( '.logo').click(function () {
+    $( ".directives" ).css({'display': 'none'});
+    $( ".main-body" ).css({'display': 'inline'})
+});
