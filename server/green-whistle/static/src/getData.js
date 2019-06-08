@@ -38,16 +38,33 @@ function addMarkersToMap(treeJsonData) {
        }
     });
     treeJsonData.forEach(treeJson => {
+        let fillColor = "#ff7800";
+        let color = "#fff";
         const point = L.geoJson(treeJson, {
             style: function (feature) {
                 return feature.properties && feature.properties.style;
             },
             onEachFeature: onEachFeature,
             pointToLayer: function (feature, latlng) {
+                if (feature.properties.status){
+                    switch (feature.properties.status) {
+                        case "replacement":
+                            fillColor = "#00ff66";
+                            break;
+                        case "request":
+                            fillColor = "#ff3333";
+                            break;
+                        case "accepted":
+                            fillColor = "#0066cc";
+                            break;
+                        default:
+                            fillColor = "#ff7800";
+                    }
+                }
                 return L.circleMarker(latlng, {
                     radius: 8,
-                    fillColor: "#ff7800",
-                    color: "#000",
+                    fillColor: fillColor,
+                    color: color,
                     weight: 1,
                     opacity: 1,
                     fillOpacity: 0.8
