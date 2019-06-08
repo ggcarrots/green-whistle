@@ -3,7 +3,8 @@
 // const db = require('../../db.json');
 
 async function askForGeoJSON() {
-    let treeJsonData = [];
+    // let treeJsonData = [];
+    let promise;
     // delete IP
     const mapBounds = map.getBounds();
     const southWestLat = mapBounds.getSouthWest().lat;
@@ -13,17 +14,31 @@ async function askForGeoJSON() {
     const bb = southWestLat.toString() + "," + southWestLng.toString() + ","
         + northEastLat.toString() + "," + northEastLng.toString();
     console.log(bb);
-    await $.get("http://10.144.3.210:5000/trees.json",
+
+    if (typeof promise !== 'undefined'){
+        promise.abort();
+    }
+
+    promise = $.get("http://10.144.3.210:5000/trees.json",
         {bb: bb},
         function (jsonData) {
-            treeJsonData = jsonData;
+            addMarkersToMap(jsonData);
             console.log(jsonData, "jsonDATA");
         })
         .fail(function () {
             console.log("ERROR OCCURED")
         });
+}
+
+function addMarkersToMap(treeJsonData) {
+    let trees = [];
+    map.eachLayer(function (layer) {
+       if (layer._leaflet_id !== 26){
+           map.removeLayer(layer);
+       }
+    });
     treeJsonData.forEach(treeJson => {
-        L.geoJson(treeJson, {
+        const point = L.geoJson(treeJson, {
             style: function (feature) {
                 return feature.properties && feature.properties.style;
             },
@@ -38,8 +53,11 @@ async function askForGeoJSON() {
                     fillOpacity: 0.8
                 });
             }
-        }).addTo(map);
+        });
+        trees.push(point);
     });
+    const treesLayer = L.layerGroup(trees);
+    treesLayer.addTo(map);
 }
 
 function onEachFeature(feature, layer) {
