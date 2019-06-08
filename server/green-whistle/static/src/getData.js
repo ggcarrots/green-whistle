@@ -3,7 +3,8 @@
 // const db = require('../../db.json');
 
 async function askForGeoJSON() {
-    let treeJsonData = [];
+    // let treeJsonData = [];
+    let promise;
     // delete IP
     const mapBounds = map.getBounds();
     const southWestLat = mapBounds.getSouthWest().lat;
@@ -13,16 +14,20 @@ async function askForGeoJSON() {
     const bb = southWestLat.toString() + "," + southWestLng.toString() + ","
         + northEastLat.toString() + "," + northEastLng.toString();
     console.log(bb);
-    await $.get("http://10.144.3.210:5000/trees.json",
+
+    if (typeof promise !== 'undefined'){
+        promise.abort();
+    }
+
+    promise = $.get("http://10.144.3.210:5000/trees.json",
         {bb: bb},
         function (jsonData) {
-            treeJsonData = jsonData;
+            addMarkersToMap(jsonData);
             console.log(jsonData, "jsonDATA");
         })
         .fail(function () {
             console.log("ERROR OCCURED")
         });
-    addMarkersToMap(treeJsonData)
 }
 
 function addMarkersToMap(treeJsonData) {
