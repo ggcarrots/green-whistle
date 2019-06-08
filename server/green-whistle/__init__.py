@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import pyproj
 import requests as rq
 import re
@@ -7,11 +7,19 @@ import json
 
 def create_app():
     # create and configure the app
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='/static')
+
+    @app.route('/')
+    def root():
+        return app.send_static_file('index.html')
 
     @app.route('/hello')
     def hello():
         return 'Hello.'
+
+    @app.route('/src/<path:path>')
+    def send_js(path):
+        return send_from_directory('src', path)
 
     # original projection: ETRS89 / Poland CS2000 zone 7
     # https://github.com/kjordahl/pyproj/blob/master/lib/pyproj/data/epsg
@@ -47,7 +55,7 @@ def create_app():
         p = {
             'request': 'getfoi',
             'version': '1.0',
-            'bbox': ':'.join(['.8f' % x for x in bb]),
+            'bbox': ':'.join(['%.8f' % x for x in bb]),
             'width': 491,
             'height': 604,
             # 'theme': 'dane_wawa.BOS_ZIELEN_WNIOSEK',
