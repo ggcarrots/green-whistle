@@ -1,29 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet GeoJSON Example</title>
+    <title>green whistle</title>
     <meta charset="utf-8" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-          integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" crossorigin=""/>
+    <link rel="stylesheet" type="text/css" href="/static/src/map.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="./src/map.css">
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" crossorigin=""></script>
+    <script src="/static/modules/jquery-3.4.1.js"></script>
 
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-            integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
+    <style>
+        .main-wrapper {
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
 
-    <script src="./modules/jquery-3.4.1.js";></script>
+        .topbar {
+          background: red;
+          height: 15vh;
+          display: block;
+        }
+
+        .main-body {
+          background: yellow;
+          height: 85vh;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .sidebar {
+          display: block;
+          width: 25vw;
+          height: 100%;
+          background: blue;
+        }
+
+        .map {
+          display: block;
+          width: 75vw;
+          height: 100%;
+        }
+    </style>
+
 </head>
 <body>
-<div id="map"></div>
 
-<script src="./src/sample-geojson.js"></script>
+<div class="main-wrapper">
+  <div class="topbar">
+  </div>
+  <div class="main-body">
+      <div class="sidebar">
+      </div>
+      <div id="map" class="map">
+      </div>
+  </div>
+</div>
 
-<script src="./src/mapSetup.js"></script>
 
-<script src="./src/getData.js">askForGeoJSON()</script>
+<script src="/static/src/sample-geojson.js"></script>
+<script src="/static/src/mapSetup.js"></script>
+<script src="/static/src/getData.js"></script>
+<script>
+    $(function(){
+        askForGeoJSON();
+    });
+</script>
 
 </body>
 </html>
