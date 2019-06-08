@@ -42,11 +42,18 @@ def create_app():
         coords = float(request.args.get('lng')), float(request.args.get('lat'))
         return jsonify(to_p2000(*coords))
 
-    def to_geojson(tree):
+    def to_geojson(tree, layer):
+        status = {
+            'dane_wawa.BOS_ZIELEN_WNIOSEK': 'request',
+            'dane_wawa.BOS_ZIELEN_ZGODA': 'accepted',
+            'dane_wawa.BOS_ZIELEN_NASADZENIE_POZ': 'replacement',
+            'dane_wawa.BOS_ZIELEN_NASADZENIE_ZAST': 'replacement',
+        }[layer]
         tree_feature = {
             "type": "Feature",
             "properties": {
                 "name": tree['name'],
+                "status": status,
             },
             "geometry": {
                 "type": "Point",
@@ -67,39 +74,46 @@ def create_app():
         bb = ':'.join(['%.8f' % x for x in bb])
 
         # fetch data from city API
-        p = {
-            'request': 'getfoi',
-            'version': '1.0',
-            'bbox': bb,
-            'width': 491,
-            'height': 604,
-            # 'theme': 'dane_wawa.BOS_ZIELEN_WNIOSEK',
-            # 'theme': 'dane_wawa.BOS_ZIELEN_ZGODA',
-            'theme': 'dane_wawa.BOS_ZIELEN_NASADZENIE_POZ',
-            # 'theme': 'dane_wawa.BOS_ZIELEN_NASADZENIE_ZAST',
-            'clickable': 'yes',
-            'area': 'yes',
-            'dstsrid': '2178',
-            'cachefoi': 'yes',
-            'tid': '686_489998',
-            'aw': 'no'
-        }
-        r = rq.post('http://mapa.um.warszawa.pl/mapviewer/foi', data=p)
-        assert r.ok, 'failed to fetch data from the city'
-        ans = r.text
+        def _fetch_trees(layer):
+            p = {
+                'request': 'getfoi',
+                'version': '1.0',
+                'bbox': bb,
+                'width': 491,
+                'height': 604,
+                'theme': layer,
+                'clickable': 'yes',
+                'area': 'yes',
+                'dstsrid': '2178',
+                'cachefoi': 'yes',
+                'tid': '686_489998',
+                'aw': 'no'
+            }
+            r = rq.post('http://mapa.um.warszawa.pl/mapviewer/foi', data=p)
+            assert r.ok, 'failed to fetch data from the city'
+            ans = r.text
 
-        # decode the response
-        trees = json.loads(re.sub(r'([,{[])(\w+):', r'\1"\2":', ans))['foiarray']
+            # decode the response
+            trees = json.loads(re.sub(r'([,{[])(\w+):', r'\1"\2":', ans))['foiarray']
 
-        # convert bb to WGS84
-        def _conv(t):
-            lat, lon = to_wgs84(t['x'], t['y'])
-            t.update({'x': lat, 'y': lon})
-            return t
-        trees = [_conv(t) for t in trees]
+            # convert bb to WGS84
+            def _conv(t):
+                lat, lon = to_wgs84(t['x'], t['y'])
+                t.update({'x': lat, 'y': lon})
+                return t
+            trees = [_conv(t) for t in trees]
 
-        # convert to geojson
-        trees = [to_geojson(t) for t in trees]
+            # convert to geojson
+            trees = [to_geojson(t, layer) for t in trees]
+
+            return trees
+
+        trees = sum([_fetch_trees(l) for l in [
+            'dane_wawa.BOS_ZIELEN_WNIOSEK',
+            'dane_wawa.BOS_ZIELEN_ZGODA',
+            'dane_wawa.BOS_ZIELEN_NASADZENIE_POZ',
+            'dane_wawa.BOS_ZIELEN_NASADZENIE_ZAST',
+        ]], [])
 
         # CORS
         resp = make_response(jsonify(trees))
