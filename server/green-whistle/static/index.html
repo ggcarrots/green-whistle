@@ -14,6 +14,11 @@
     <script src="/static/modules/jquery-3.4.1.js"></script>
 
     <style>
+
+        body {
+            font-size: .7rem;
+        }
+
         .main-wrapper {
           height: 100vh;
           display: flex;
@@ -21,32 +26,109 @@
         }
 
         .topbar {
-          background: red;
+          background: #000000;
           height: 15vh;
-          display: block;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          align-items: center;
+          color: white;
         }
 
         .main-body {
           background: yellow;
           height: 85vh;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
+          position: relative;
         }
 
         .sidebar {
-          display: block;
+          display: flex;
+          flex-flow: column nowrap;
+          position: absolute;
           width: 25vw;
           height: 100%;
-          background: blue;
+          z-index: 1;
+          background: transparent;
         }
 
         .map {
           display: block;
-          width: 75vw;
+          position: absolute;
+          width: 100vw;
           height: 100%;
+          z-index: 0;
         }
+
+        .topbar .logo {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+        }
+        .topbar .logo h1 {
+            margin-top: -.1rem;
+            margin-bottom: -.1rem;
+            color: #00ff66;
+        }
+
+        .tabs {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+        }
+
+        .sidebar .details {
+            height: 66.66667%;
+            width: 100%;
+            background: transparent;
+        }
+        .detail {
+            height: 16.6667%;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .detail>div {
+            display: inline-block;
+            width: 50%;
+            padding: 2em;
+        }
+        .detail:nth-child(even) {
+            background: #00ff66b2;
+        }
+        .detail:nth-child(odd) {
+            background: #009933b2;
+        }
+        .sidebar .actions {
+            height: 33.33333%;
+            width: 100%;
+            background: #333333;
+        }
+        .action {
+            height: 33.3333333%;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #555555;
+            border-radius: 0;
+            font-size: .7rem;
+        }
+        .action:hover {
+            display: flex;
+            flex-flow: row nowrap;
+            color: #333333;
+            text-decoration: none;
+            background: #00ff66;
+        }
+
     </style>
 
 </head>
@@ -54,9 +136,46 @@
 
 <div class="main-wrapper">
   <div class="topbar">
+      <div class="logo">
+          <div>
+            <h1>green</h1>
+            <h1>whistle</h1>
+          </div>
+      </div>
+      <div class="searchbar"></div>
+      <div>How to save a tree?</div>
+      <div>Learn more about trees in Warsaw</div>
+      <div>Tree expert contact list</div>
+      <div>About us</div>
+      <div class="whistle"><img src="static/icon_1_alarm-01.png" height="80"/></div>
   </div>
   <div class="main-body">
       <div class="sidebar">
+          <div class="details">
+            <div class="detail">
+                <div>Species</div><div>Chestnut</div>
+            </div>
+            <div class="detail">
+                <div>Inventory number</div><div>7caf8fccf76cf5</div>
+            </div>
+            <div class="detail">
+                <div>Status</div><div>in danger</div>
+            </div>
+            <div class="detail">
+                <div>Management unit</div><div>Wola District</div>
+            </div>
+            <div class="detail">
+                <div>Updated on</div><div>06.12.2018</div>
+            </div>
+            <div class="detail">
+                <div>Cut out reason</div><div>disease</div>
+            </div>
+          </div>
+          <div class="actions">
+              <a class="action btn btn-link" href="">Contact an expert</a>
+              <a class="action btn btn-link" href="">Whistle on FB</a>
+              <a class="action btn btn-link" href="">Follow</a>
+          </div>
       </div>
       <div id="map" class="map">
       </div>
