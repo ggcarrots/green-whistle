@@ -59,6 +59,7 @@
           height: 100%;
           z-index: 1;
           background: transparent;
+          opacity: 0;
         }
 
         .map {
@@ -139,6 +140,10 @@
             background: #00ff66;
         }
 
+        #directives_button:hover{
+            color: #00ff66;
+        }
+
 
     </style>
 
@@ -147,14 +152,14 @@
 
 <div class="main-wrapper">
   <div class="topbar">
-      <div class="logo">
+      <div class="logo" style="cursor: pointer">
           <div>
             <h1>green</h1>
             <h1>whistle</h1>
           </div>
       </div>
       <div class="searchbar"></div>
-      <div id="directives_button">How to save a tree?</div>
+      <div id="directives_button" style="cursor: pointer">How to save a tree?</div>
       <div>Learn more about trees in Warsaw</div>
       <div>Tree expert contact list</div>
       <div>About us</div>

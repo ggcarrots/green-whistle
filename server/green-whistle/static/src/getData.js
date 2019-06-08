@@ -79,6 +79,7 @@ function addMarkersToMap(treeJsonData) {
                     opacity: 1,
                     fillOpacity: 0.8
                 }).on('click', function (options) {
+                    $( ".sidebar" ).css({'opacity': '1'});
                     updateSidebar(options.sourceTarget.feature);
                 });
             }

@@ -1,5 +1,6 @@
 // map creation
 let map = L.map('map', {zoomControl: false}).setView([52.20933320698831, 20.974724907134092], 16);
+
 L.control.zoom({
      position:'bottomright'
 }).addTo(map);
