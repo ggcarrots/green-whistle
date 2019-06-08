@@ -1,21 +1,55 @@
-function askForGeoJSON(){
-    $.get("http://10.144.3.210:5000/trees.json",
-        {bb: "52.205324323965435,20.97427896707837,52.21105683036724,20.98185675745256"},
-        function (data) {
-            console.log(data);
+// import { map } from './mapSetup'
+
+// const db = require('../../db.json');
+
+async function askForGeoJSON() {
+    let treeJsonData = [];
+    // delete IP
+    const mapBounds = map.getBounds();
+    const southWestLat = mapBounds.getSouthWest().lat;
+    const southWestLng = mapBounds.getSouthWest().lng;
+    const northEastLat = mapBounds.getNorthEast().lat;
+    const northEastLng = mapBounds.getNorthEast().lng;
+    const bb = southWestLat.toString() + "," + southWestLng.toString() + ","
+        + northEastLat.toString() + "," + northEastLng.toString();
+    console.log(bb);
+    await $.get("http://10.144.3.210:5000/trees.json",
+        {bb: bb},
+        function (jsonData) {
+            treeJsonData = jsonData;
+            console.log(jsonData, "jsonDATA");
         })
         .fail(function () {
             console.log("ERROR OCCURED")
         });
+    treeJsonData.forEach(treeJson => {
+        L.geoJson(treeJson, {
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+            onEachFeature: onEachFeature,
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: "#ff7800",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+            }
+        }).addTo(map);
+    });
 }
 
-// askForGeoJSON = () => {
-//     $.get("http://10.144.3.210:5000/trees.json",
-//         {bb: "52.205324323965435,20.97427896707837,52.21105683036724,20.98185675745256"},
-//         function (data) {
-//             console.log(data);
-//         })
-//         .fail(function () {
-//             console.log("ERROR OCCURED")
-//         });
-// }
+function onEachFeature(feature, layer) {
+    // content for each popup on map
+    let popupContent = "<p></p>";
+
+    // addition of style to popup content
+    if (feature.properties && feature.properties.name) {
+        popupContent += feature.properties.name;
+    }
+    // adding popup to marker
+    layer.bindPopup(popupContent);
+}

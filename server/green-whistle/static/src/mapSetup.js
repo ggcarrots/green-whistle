@@ -1,5 +1,5 @@
 // map creation
-let map = L.map('map').setView([52.230639, 21.007889], 13);
+let map = L.map('map').setView([52.20933320698831, 20.974724907134092], 13);
 
 // adding layers to map
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -10,7 +10,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     id: 'mapbox.light'
 }).addTo(map);
 
-
+// module.exports = map
 
 
 // let baseballIcon = L.icon({
