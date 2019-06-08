@@ -1,3 +1,4 @@
+# coding=utf-8
 from flask import Flask, request, jsonify, send_from_directory, make_response
 import pyproj
 import requests as rq
@@ -49,12 +50,26 @@ def create_app():
             'dane_wawa.BOS_ZIELEN_NASADZENIE_POZ': 'replacement',
             'dane_wawa.BOS_ZIELEN_NASADZENIE_ZAST': 'replacement',
         }[layer]
+
+        details = dict([line.split(': ') for line in tree['name'].split('\n')])
+        properties_mapping = {
+            u"Numer inwentaryzacyjny": "inventory_number",
+            u"Nazwa polska": "species",
+            u"Jednostka zarządzająca": "management_unit",
+            u"Aktualność danych na dzień": "updated",
+        }
+        properties_from_data = {properties_mapping[k]: details[k] if k in details else '-'
+                                for k in properties_mapping.keys()}
+        properties = {
+            "name": tree['name'],
+            "status": status,
+            "cut_out_reason": "posing a threat"
+        }
+        properties.update(properties_from_data)
+
         tree_feature = {
             "type": "Feature",
-            "properties": {
-                "name": tree['name'],
-                "status": status,
-            },
+            "properties": properties,
             "geometry": {
                 "type": "Point",
                 "coordinates": [tree['x'], tree['y']]
