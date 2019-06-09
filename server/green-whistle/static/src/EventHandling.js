@@ -16,7 +16,7 @@ function updateSidebar(feature) {
         $( "#inventory_number" ).html(feature.properties.inventory_number);
         $( "#status" ).html(feature.properties.status);
         if (feature.properties.status === "request"){
-            $( "#status_big_div" ).css({'background-color': '#ff3333'})
+            $( "#status_big_div" ).css({'background-color': '#ff3333b2'})
         }
         else{
             $( ".detail:nth-child(odd)" ).css({'background-color': '#009933b2'})
