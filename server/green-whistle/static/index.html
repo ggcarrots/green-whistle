@@ -42,10 +42,18 @@
           color: white;
         }
 
+        .directives{
+            background: yellow;
+            height: 85vh;
+            position: relative;
+            display: none;
+        }
+
         .main-body {
-          background: yellow;
+          /*background: yellow;*/
           height: 85vh;
           position: relative;
+          display: inline;
         }
 
         .sidebar {
@@ -56,6 +64,7 @@
           height: 100%;
           z-index: 1;
           background: transparent;
+          opacity: 0;
         }
 
         .map {
@@ -162,6 +171,11 @@
             background: #00ff66;
         }
 
+        #directives_button:hover{
+            color: #00ff66;
+        }
+
+
     </style>
 
 </head>
@@ -169,39 +183,40 @@
 
 <div class="main-wrapper">
   <div class="topbar">
-      <div class="logo">
+      <div class="logo" style="cursor: pointer">
           <div>
             <h1>green</h1>
             <h1>whistle</h1>
           </div>
       </div>
       <div class="searchbar"></div>
-      <div>How to save a tree?</div>
+      <div id="directives_button" style="cursor: pointer">How to save a tree?</div>
       <div>Learn more about trees in Warsaw</div>
       <div>Tree expert contact list</div>
       <div>About us</div>
       <div class="whistle"><img src="static/icon_1_alarm-01.png" height="80"/></div>
   </div>
+  <div class="directives"></div>
   <div class="main-body">
       <div class="sidebar">
           <div class="details">
             <div class="detail">
-                <div>Species</div><div>Chestnut</div>
+                <div>Species</div><div id = "species">Chestnut</div>
             </div>
             <div class="detail">
-                <div>Inventory number</div><div>7caf8fccf76cf5</div>
+                <div>Inventory number</div><div  id = "inventory_number">7caf8fccf76cf5</div>
+            </div>
+            <div class="detail" id="status_big_div">
+                <div>Status</div><div  id = "status">in danger</div>
             </div>
             <div class="detail">
-                <div>Status</div><div>in danger</div>
+                <div>Management unit</div><div id = "management_unit">Wola District</div>
             </div>
             <div class="detail">
-                <div>Management unit</div><div>Wola District</div>
+                <div>Updated on</div><div  id = "updated">06.12.2018</div>
             </div>
             <div class="detail">
-                <div>Updated on</div><div>06.12.2018</div>
-            </div>
-            <div class="detail">
-                <div>Cut out reason</div><div>disease</div>
+                <div>Cut out reason</div><div id = "cut_out_reason">disease</div>
             </div>
           </div>
           <div class="actions">

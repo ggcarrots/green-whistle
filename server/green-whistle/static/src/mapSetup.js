@@ -1,5 +1,6 @@
 // map creation
 let map = L.map('map', {zoomControl: false}).setView([52.20933320698831, 20.974724907134092], 16);
+
 L.control.zoom({
      position:'bottomright'
 }).addTo(map);
@@ -12,6 +13,10 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
         'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox.light'
 }).addTo(map);
+
+map.on("mousedown", function (event) {
+    $( ".sidebar" ).css({'opacity': '0'});
+});
 
 // module.exports = map
 
