@@ -43,8 +43,8 @@
         }
 
         .directives{
-            background: yellow;
-            height: 85vh;
+            background: #00ff66b2;
+            /*height: 85vh;*/
             position: relative;
             display: none;
         }
@@ -81,6 +81,8 @@
           justify-content: center;
           align-items: center;
 
+            /*mask: circle(60px at center);*/
+
           position: absolute;
           width: 75vw;
           height: 100%;
@@ -90,15 +92,18 @@
           background: black;
           opacity: 0.5;
           pointer-events: none;
+          display: none;
         }
 
         .scope {
-          width: 75vh;
-          height: 75vh;
-          background: yellow;
-          opacity: 0.5;
-          border-radius: 50%;
-          pointer-events: none;
+            mask: url(#scope-overlay) luminance;
+          /*  clip-path: circle(60px at center);*/
+          /*width: 75vh;*/
+          /*height: 75vh;*/
+          /*background: transparent;*/
+          /*opacity: 0.5;*/
+          /*border-radius: 50%;*/
+          /*pointer-events: none;*/
         }
 
         .topbar .logo {
@@ -175,6 +180,14 @@
             color: #00ff66;
         }
 
+        #select_area{
+            color: white;
+        }
+
+        #directives_image{
+            display:block;
+            margin:auto;
+        }
 
     </style>
 
@@ -196,7 +209,7 @@
       <div>About us</div>
       <div class="whistle"><img src="static/icon_1_alarm-01.png" height="80"/></div>
   </div>
-  <div class="directives"></div>
+  <div class="directives"><img src="./directives.png" width = "65%" id = "directives_image"/></div>
   <div class="main-body">
       <div class="sidebar">
           <div class="details">
@@ -220,13 +233,13 @@
             </div>
           </div>
           <div class="actions">
-              <a class="action btn btn-link" href="">Contact an expert</a>
+              <a class="action btn btn-link" id="select_area">Select area to follow</a>
               <a class="action btn btn-link" href="">Whistle on FB</a>
               <a class="action btn btn-link" href="">Follow</a>
           </div>
       </div>
       <div id="map" class="map"></div>
-      <div id="scope-overlay" class="scope-overlay" style="display:none">
+      <div id="scope-overlay" class="scope-overlay">
           <div class="scope"></div>
       </div>
   </div>

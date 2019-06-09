@@ -37,7 +37,6 @@ $( '.logo').click(function () {
     $( ".main-body" ).css({'display': 'inline'})
 });
 
-// $( '.map').click(function (event) {
-//     event.stopPropagation();
-//     $( ".sidebar" ).css({'opacity': '0'});
-// });
+$( '#select_area').click(function (event) {
+    $( ".scope-overlay" ).css({'display': 'inline'});
+});
