@@ -16,10 +16,10 @@ function updateSidebar(feature) {
         $( "#inventory_number" ).html(feature.properties.inventory_number);
         $( "#status" ).html(feature.properties.status);
         if (feature.properties.status === "request"){
-            $( "#status" ).css({'background': '#009933b2'})
+            $( "#status_big_div" ).css({'background-color': '#ff3333'})
         }
         else{
-            $( "#status" ).css({'background-color': '#009933b2'})
+            $( ".detail:nth-child(odd)" ).css({'background-color': '#009933b2'})
         }
         $( "#management_unit" ).html(feature.properties.management_unit);
         $( "#updated" ).html(feature.properties.updated);
