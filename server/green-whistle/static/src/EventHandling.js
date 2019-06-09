@@ -38,5 +38,17 @@ $( '.logo').click(function () {
 });
 
 $( '#select_area').click(function (event) {
-    $( ".scope-overlay" ).css({'display': 'inline'});
+    const text = $('#select_area').html();
+    if (text === "Select area to follow"){
+        $( "#select_area").html("Accept");
+        $( ".scope-overlay" ).css({'display': 'inline'});
+
+    }
+    else{
+
+        $( ".scope-overlay" ).css({'display': 'none'});
+        $( "#select_area").html("Accept");
+    }
+
+
 });

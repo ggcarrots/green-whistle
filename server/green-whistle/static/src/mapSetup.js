@@ -14,9 +14,9 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     id: 'mapbox.light'
 }).addTo(map);
 
-map.on("mousedown", function (event) {
-    $( ".sidebar" ).css({'opacity': '0'});
-});
+// map.on("mousedown", function (event) {
+//     $( ".sidebar" ).css({'opacity': '0'});
+// });
 
 // module.exports = map
 
